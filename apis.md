@@ -5,7 +5,7 @@ description: This is a repository of registrations APIs, self-contained as a Git
   operations.
 image: http://template.streamdata.gallery/assets/registrations.png
 created: "2018-02-24"
-modified: "2018-06-20"
+modified: "2018-06-25"
 url: http://registrations.streamdata.gallery/apis.json
 specificationVersion: "0.14"
 apis: []
@@ -19,10 +19,10 @@ include:
   url: https://raw.githubusercontent.com/streamdata-gallery-topics/registrations/master/_listings/open-science-framework/apis.yaml
 - name: Reverb
   url: https://raw.githubusercontent.com/streamdata-gallery-topics/registrations/master/_listings/reverb/apis.yaml
+- name: UK National Archives
+  url: https://raw.githubusercontent.com/streamdata-gallery-topics/registrations/master/_listings/uk-national-archives/apis.yaml
 - name: AT&T Dev Program
   url: https://raw.githubusercontent.com/streamdata-gallery-topics/registrations/master/_listings/att-dev-program/apis.yaml
-- name: UK National Archives Discovery
-  url: https://raw.githubusercontent.com/streamdata-gallery-topics/registrations/master/_listings/uk-national-archives-discovery/apis.yaml
 maintainers:
 - FN: Kin Lane
   x-twitter: apievangelist

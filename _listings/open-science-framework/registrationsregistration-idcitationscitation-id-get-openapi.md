@@ -434,6 +434,579 @@ paths:
       - Registration
       - Citations
       - Citation
+  /registrations/{registration_id}/comments/:
+    get:
+      summary: List all comments
+      description: |-
+        A paginated list of the registration's comments.
+
+        The returned comments are sorted by their creation date, with the most recent comments appearing first.
+        ####Permissions
+        Comments of public registrations are given read-only access to everyone.
+
+        If the comment-level is `private`, only registration contributors have permission to comment.
+
+        If the comment-level is `public`, any logged-in OSF user can comment.
+
+        Comments of private registrations are only visible to contributors and administrators on the registration.
+        ####Returns
+        Returns a JSON object containing `data` and `links` keys.
+
+        The `data` key contains an array of comment objects. Each resource in the array is a separate comment object.
+
+        The `links` key contains a dictionary of links that can be used for [pagination](#Introduction_pagination).
+        #### Filtering
+        You can optionally request that the response only include comments that match your filters by utilizing the `filter` query parameter, e.g. https://api.osf.io/v2/registrations/wuerf/comments/?filter[target]=wuerf
+
+        Comments may be filtered by their `deleted`, `target`, `date_created`, `date_modified`.
+
+        Most fields are string fields and will be filtered using simple substring matching. Deleted is a boolean field, and can be filtered using truthy values, such as **true**, **false**, **0** or **1**. Note that quoting `true` or `false` in the query will cause the match to fail.
+      operationId: registrations_comments_list
+      x-api-path-slug: registrationsregistration-idcomments-get
+      parameters:
+      - in: path
+        name: registration_id
+        description: The unique identifier of the registration
+      responses:
+        200:
+          description: OK
+      tags:
+      - Registrations
+      - Registration
+      - Comments
+  /registrations/{registration_id}/contributors/:
+    get:
+      summary: List all contributors
+      description: |-
+        A paginated list of all contributors on this registration.
+        The returned contributors are sorted by their index.
+
+        Contributors are users who can make changes to the registration or, in the case of private registration, have read access to the registration.
+
+        Contributors are categorized as either "bibliographic" or "non-bibliographic". From a permissions standpoint, both are the same, but bibliographic contributors are included in citations and are listed in the contributors list on the OSF, while non-bibliographic contributors are not.
+
+        Note that if an anonymous view_only key is being used to view the list of contributors, the user relationship will not be exposed and the contributor ID will be an empty string.
+
+        #### Returns
+        Returns a JSON object containing `data` and `links` keys.
+
+        The `data` key contains an array of up to 10 contributors. Each resource in the array contains the full representation of the contributor. Additionally, the full representation of the user this contributor represents is automatically embedded within the `data` key of the response.
+
+        The `links` key contains a dictionary of links that can be used for [pagination](#Introduction_pagination).
+        #### Filtering
+        You can optionally request that the response only include contributors that match your filters by utilizing the `filter` query parameter, e.g. https://api.osf.io/v2/registrations/wu3a4/contributors/?filter[bibliographic]=true.
+
+        Contributors may be filtered by their `bibliographic` and `permission` attributes.
+      operationId: registrations_contributors_list
+      x-api-path-slug: registrationsregistration-idcontributors-get
+      parameters:
+      - in: path
+        name: registration_id
+        description: The unique identifier of the registration
+      responses:
+        200:
+          description: OK
+      tags:
+      - Registrations
+      - Registration
+      - Contributors
+  /registrations/{registration_id}/contributors/{user_id}/:
+    get:
+      summary: Retrieve a contributor
+      description: |-
+        Retrieves the details of a contributor on this registration.
+
+        #### Returns
+        Returns a JSON object with a `data` key containing the representation of the requested contributor, if the request is successful.
+
+        If the request is unsuccessful, an `errors` key containing information about the failure will be returned. Refer to the [list of error codes](#Introduction_error_codes) to understand why this request may have failed.
+      operationId: registrations_contributors_read
+      x-api-path-slug: registrationsregistration-idcontributorsuser-id-get
+      parameters:
+      - in: path
+        name: registration_id
+        description: The unique identifier of the registration
+      - in: path
+        name: user_id
+        description: The unique identifier of the user
+      responses:
+        200:
+          description: OK
+      tags:
+      - Registrations
+      - Registration
+      - Contributors
+      - User
+  /registrations/{registration_id}/files/:
+    get:
+      summary: List all storage providers
+      description: |-
+        A paginated list of storage providers enabled on the registration
+
+        Users of the OSF may access their data on a [number of cloud-storage services](https://api.osf.io/v2/#storage-providers) that have integrations with the OSF. We call these **providers**. By default, every node has access to the OSF-provided storage but may use as many of the supported providers as desired.
+
+
+        ####Returns
+        Returns a JSON object containing `data` and `links` keys.
+
+        The `data` key contains an array of up to 10 files. Each resource in the array is a separate file object.
+
+        The `links` key contains a dictionary of links that can be used for [pagination](#Introduction_pagination).
+
+        Note: In the OSF filesystem model, providers are treated as folders, but with special properties that distinguish them from regular folders. Every provider folder is considered a root folder, and may not be deleted through the regular file API.
+      operationId: registrations_providers_list
+      x-api-path-slug: registrationsregistration-idfiles-get
+      parameters:
+      - in: path
+        name: registration_id
+        description: The unique identifier of the registration
+      responses:
+        200:
+          description: OK
+      tags:
+      - Registrations
+      - Registration
+      - Files
+  /registrations/{registration_id}/files/{provider}/:
+    get:
+      summary: List all files
+      description: |-
+        List of all the registration's files/folders for a given storage provider.
+
+        ####Returns
+
+        Returns a JSON object containing `data` and `links` keys.
+
+        The `data` key contains an array of files. Each resource in the array is a separate file object and contains the full representation of the file.
+
+        The `links` key contains a dictionary of links that can be used for [pagination](#Introduction_pagination).
+
+        ####Filtering
+
+        You can optionally request that the response only include files that match your filters by utilizing the `filter` query parameter, e.g. https://api.osf.io/v2/registrations/wucr8/files/osfstorage/?filter[kind]=file
+
+        Files may be filtered by `id`, `name`, `node`, `kind`, `path`, `provider`, `size`, and `last_touched`.
+      operationId: registrations_files_list
+      x-api-path-slug: registrationsregistration-idfilesprovider-get
+      parameters:
+      - in: path
+        name: provider
+        description: The unique identifier of the storage provider
+      - in: path
+        name: registration_id
+        description: The unique identifier of the registration
+      responses:
+        200:
+          description: OK
+      tags:
+      - Registrations
+      - Registration
+      - Files
+      - Provider
+  /registrations/{registration_id}/files/{provider}/{path}/:
+    get:
+      summary: Retrieve a file
+      description: |-
+        Retrieves the details of a registration file for the given storage provider.
+        ####Returns
+        Returns a JSON object with a `data` key containing the representation of the requested registration file object, if the request is successful.
+
+        If the request is unsuccessful, an `errors` key containing information about the failure will be returned. Refer to the [list of error codes](#Introduction_error_codes) to understand why this request may have failed.
+      operationId: registrations_files_read
+      x-api-path-slug: registrationsregistration-idfilesproviderpath-get
+      parameters:
+      - in: path
+        name: path
+        description: The unique identifier of the file path
+      - in: path
+        name: provider
+        description: The unique identifier of the storage provider
+      - in: path
+        name: registration_id
+        description: The unique identifier of the registration
+      responses:
+        200:
+          description: OK
+      tags:
+      - Registrations
+      - Registration
+      - Files
+      - Provider
+      - Path
+  /registrations/{registration_id}/forks/:
+    get:
+      summary: List all forks
+      description: |-
+        A paginated list of the registration???s forks
+
+        The returned forks are sorted by their `forked_date`, with the most recent forks appearing first.
+
+        Forking a registration creates a copy of an existing registration and all of its contents.
+        #### Returns
+        Returns a JSON object containing `data` and `links` keys.
+
+        The `data` key contains an array of up to 10 forks. If the current registration has no fork, the `data` key will contain an empty array. Each resource in the array is a separate registration object and contains the full representation of the registration's fork.
+
+        The `links` key contains a dictionary of links that can be used for [pagination](#Introduction_pagination).
+      operationId: registrations_forks_list
+      x-api-path-slug: registrationsregistration-idforks-get
+      parameters:
+      - in: path
+        name: registration_id
+        description: The unique identifier of the registration
+      responses:
+        200:
+          description: OK
+      tags:
+      - Registrations
+      - Registration
+      - Forks
+    post:
+      summary: Create a fork
+      description: |-
+        Creates a fork of the given registration.
+
+        Forking a project creates a copy of an existing registration and all of its contents. The fork always points back to the original registration, forming a network of registrations.
+
+        You might use a fork to copy another's work to build on and extend. For example, a professor may create an OSF project of materials for individual student use. Each student forks the project to have his or her own copy of the materials to start his/her own work.
+
+        When creating a fork, your fork will only contain public components of the current registration and components for which you are a contributor. Private components that you do not have access to will not be forked.
+        #### Required
+        There are no required attributes when creating a fork, as all of the forked registration's attributes will be copied from the current registration.
+
+        The `title` field is optional, with the default title being "Fork of " prepended to the current registration's title.
+        #### Returns
+        Returns a JSON object with a `data` key containing the complete representation of the forked registration, if the request is successful.
+        If the request is unsuccessful, an `errors` key containing information about the failure will be returned. Refer to the [list of error codes](#Introduction_error_codes) to understand why this request may have failed.
+      operationId: registrations_forks_create
+      x-api-path-slug: registrationsregistration-idforks-post
+      parameters:
+      - in: body
+        name: body
+        schema:
+          $ref: '#/definitions/holder'
+      - in: path
+        name: registration_id
+        description: The unique identifier of the registration
+      responses:
+        200:
+          description: OK
+      tags:
+      - Registrations
+      - Registration
+      - Forks
+  /registrations/{registration_id}/identifiers/:
+    get:
+      summary: List all identifiers
+      description: |-
+        A paginated list of the registration's identifiers.
+        ####Returns
+        Returns a JSON object containing `data` and `links` keys.
+
+        The `data` key contains an array of identifiers. Each resource in the array is a separate identifier object.
+
+        The `links` key contains a dictionary of links that can be used for [pagination](#Introduction_pagination).
+        ####Filtering
+
+        You can optionally request that the response only include registrations that match your filters by utilizing the `filter` query parameter, e.g. https://api.osf.io/v2/registrations/wucr8/identifiers/?filter[category]=ark
+
+        Identifiers may be filtered by their `category` e.g `ark` or `doi`.
+      operationId: registrations_identifiers_list
+      x-api-path-slug: registrationsregistration-ididentifiers-get
+      parameters:
+      - in: path
+        name: registration_id
+        description: The unique identifier of the registration
+      responses:
+        200:
+          description: OK
+      tags:
+      - Registrations
+      - Registrationentifiers
+  /registrations/{registration_id}/institutions/:
+    get:
+      summary: List all institutions
+      description: |-
+        A paginated list of institutions affiliated with the registration.
+        ####Returns
+        Returns a JSON object containing `data` and `links` keys.
+
+        The `data` key contains an array of up to 10 affiliated institutions. Each resource in the array is a separate institution object.
+
+        The `links` key contains a dictionary of links that can be used for [pagination](#Introduction_pagination).
+      operationId: registrations_institutions_list
+      x-api-path-slug: registrationsregistration-idinstitutions-get
+      parameters:
+      - in: path
+        name: registration_id
+        description: The unique identifier of the registration
+      responses:
+        200:
+          description: OK
+      tags:
+      - Registrations
+      - Registration
+      - Institutions
+  /registrations/{registration_id}/linked_nodes/:
+    get:
+      summary: List all linked nodes
+      description: |-
+        List of all nodes linked to the registration.
+        ####Returns
+        Returns a JSON object containing `data` and `links` keys.
+
+        The `data` key contains an array of up to 10 nodes. Each resource in the array is a separate node object.
+
+        The `links` key contains a dictionary of links that can be used for [pagination](#Introduction_pagination).
+        ####Filtering
+        You can optionally request that the response only include nodes that match your filters by utilizing the `filter` query parameter, e.g. https://api.osf.io/v2/registrations/wucr8/linked_nodes/?filter[title]=reproducibility/?filter[title]=reproducibility.
+
+        Nodes may be filtered by their `title`, `category`, `description`, `public`, `registration`, or `tags`. `title`, `description`, and `category` are string fields and will be filteres using simple substring matching. `public`, `registration` are boolean and can be filtered using truthy values, such as `true`, `false`, `0`, `1`. `tags` is an array of simple strings.
+      operationId: registrations_linked_nodes_list
+      x-api-path-slug: registrationsregistration-idlinked-nodes-get
+      parameters:
+      - in: path
+        name: registration_id
+        description: The unique identifier of the registration
+      responses:
+        200:
+          description: OK
+      tags:
+      - Registrations
+      - Registration
+      - Linked
+      - Nodes
+  /registrations/{registration_id}/logs/:
+    get:
+      summary: List all logs
+      description: |-
+        A paginated list of the registration's logs.
+
+        The returned logs are sorted by their `date`, with the most recents logs appearing first.
+
+        ####Returns
+        Returns a JSON object containing `data` and `links` keys.
+
+        The `data` key contains an array of up to 10 logs. Each resource in the array is a separate logs object.
+
+        The `links` key contains a dictionary of links that can be used for [pagination](#Introduction_pagination).
+        ####Filtering
+        You can optionally request that the response only include logs that match your filters by utilizing the `filter` query parameter, e.g. https://api.osf.io/v2/registrations/wucr8/logs/?filter[action]=made_private.
+
+        Logs may be filtered by their `action`, and `date`.
+      operationId: registrations_logs_list
+      x-api-path-slug: registrationsregistration-idlogs-get
+      parameters:
+      - in: path
+        name: registration_id
+        description: The unique identifier of the registration
+      responses:
+        200:
+          description: OK
+      tags:
+      - Registrations
+      - Registration
+      - Logs
+  /registrations/{registration_id}/view_only_links/:
+    get:
+      summary: List all view only links
+      description: |-
+        A paginated list of view only links created for this registration.
+        ####Returns
+        Returns a JSON object containing `data` and `links` keys.
+
+        The `data` key contains an array of up to 10 view only links. Each resource in the array is a view only link object.
+
+        The `links` key contains a dictionary of links that can be used for [pagination](#Introduction_pagination).
+
+        ####Permissions
+
+        View only links on a registration, public or private, are readable and writeable only by users that are administrators on the registration.
+
+        ####Filtering
+
+        You can optionally request that the response only include view only links that match your filters by utilizing the `filter` query parameter, e.g. https://api.osf.io/v2/registrations/wu3a4/view_only_links/?filter[anonymous]=true.
+
+        View Only Links may be filtered based on their `name`, `anonymous` and `date_created` fields. Possible comparison operators include 'gt' (greater than), 'gte'(greater than or equal to), 'lt' (less than) and 'lte' (less than or equal to). The date must be in the format YYYY-MM-DD and the time is optional.
+      operationId: registrations_view_only_links_list
+      x-api-path-slug: registrationsregistration-idview-only-links-get
+      parameters:
+      - in: path
+        name: registration_id
+        description: The unique identifier of the registration
+      responses:
+        200:
+          description: OK
+      tags:
+      - Registrations
+      - Registration
+      - View
+      - Only
+      - Links
+  /registrations/{registration_id}/view_only_links/{link_id}/:
+    get:
+      summary: Retrieve a view only link
+      description: |-
+        Retrieves the details of a view only link created from this registration.
+        ####Returns
+        Returns a JSON object with a `data` key containing the representation of the requested view only link, if the request is successful.
+
+        If the request is unsuccessful, an `errors` key containing information about the failure will be returned. Refer to the [list of error codes](#Introduction_error_codes) to understand why this request may have failed.
+        ####Permissions
+
+        View only links on a registration, public or private, are readable and writeable only by users that are administrators on the registration.
+      operationId: registrations_view_only_links_read
+      x-api-path-slug: registrationsregistration-idview-only-linkslink-id-get
+      parameters:
+      - in: path
+        name: link_id
+        description: The unique identifier of the view only link
+      - in: path
+        name: registration_id
+        description: The unique identifier of the registration
+      responses:
+        200:
+          description: OK
+      tags:
+      - Registrations
+      - Registration
+      - View
+      - Only
+      - Links
+      - Link
+  /registrations/{registration_id}/wikis/:
+    get:
+      summary: List all wikis
+      description: |-
+        A paginated list of the registration's wiki pages
+        ####Returns
+        A list of all registration's current wiki page versions ordered by their date_modified. Each resource contains the full representation of the wiki, meaning additional requests to an individual wiki's detail view are not necessary.
+
+        If the request is unsuccessful, a JSON object with an `errors` key containing information about the failure will be returned. Refer to the [list of error codes](#Introduction_error_codes) to understand why this request may have failed.
+        #### Filtering
+        Wiki pages can be filtered based on their `name` and `date_modified` fields.
+        + `filter[name]=<Str>` -- filter wiki pages by name
+        + `filter[date_modified][comparison_operator]=YYYY-MM-DDTH:M:S` -- filter wiki pages based on date modified.
+
+        Possible comparison operators include 'gt' (greater than), 'gte'(greater than or equal to), 'lt' (less than) and 'lte' (less than or equal to). The date must be in the format YYYY-MM-DD and the time is optional.
+      operationId: registrations_wikis_list
+      x-api-path-slug: registrationsregistration-idwikis-get
+      parameters:
+      - in: path
+        name: registration_id
+        description: The unique identifier of the registration
+      responses:
+        200:
+          description: OK
+      tags:
+      - Registrations
+      - Registration
+      - Wikis
+  /users/{user_id}/registrations/:
+    get:
+      summary: List all registrations
+      description: |-
+        A paginated list of registrations that the user is a contributor to. The returned registrations are sorted by their `date_modified`, with the most recently updated registrations appearing first.
+
+        If the user ID in the path is the same as the logged-in user, all registrations will be returned. Otherwise, only the user's public registrations will be returned.
+
+        User nodes are not available at this endpoint.
+        #### Returns
+        Returns a JSON object containing `data` and `links` keys.
+
+        The `data` key contains an array of 10 registrations. Each resource in the array is a separate registration object and contains the full representation of the registration, meaning additional requests to a registration's detail view are not necessary.
+
+        The `links` key contains a dictionary of links that can be used for [pagination](#Introduction_pagination).
+        #### Filtering
+        You can optionally request that the response only include registrations that match your filters by utilizing the `filter` query parameter, e.g. https://api.osf.io/v2/users/cdi38/registrations/?filter[title]=replication.
+
+        Registrations may be filtered by their `id`, `title`, `category`, `description`, `public`, `tags`, `date_created`, `date_modified`, `root`, `parent`, and `contributors`.
+      operationId: users_registrations_list
+      x-api-path-slug: usersuser-idregistrations-get
+      parameters:
+      - in: path
+        name: user_id
+        description: The unique identifier of the user
+      responses:
+        200:
+          description: OK
+      tags:
+      - Users
+      - User
+      - Registrations
+  /actions/:
+    get:
+      summary: Actions
+      description: |-
+        A log can have one of many actions. The complete list of loggable actions (in the format {identifier}: {description}) is as follows:
+        * `project_created`: A Node is created
+        * `project_registered`: A Node is registered
+        * `project_deleted`: A Node is deleted
+        * `created_from`: A Node is created using an existing Node as a template
+        * `pointer_created`: A Pointer is created
+        * `pointer_forked`: A Pointer is forked
+        * `pointer_removed`: A Pointer is removed
+        * `node_removed`: A component is deleted
+        * `node_forked`: A Node is forked
+        ---
+        * `made_public`: A Node is made public
+        * `made_private`: A Node is made private
+        * `tag_added`: A tag is added to a Node
+        * `tag_removed`: A tag is removed from a Node
+        * `edit_title`: A Node's title is changed
+        * `edit_description`: A Node's description is changed
+        * `updated_fields`: One or more of a Node's fields are changed
+        * `external_ids_added`: An external identifier is added to a Node (e.g. DOI, ARK)
+        * `view_only_link_added`: A view-only link was added to a Node
+        * `view_only_link_removed`:  A view-only link was removed from a Node
+        ---
+        * `contributor_added`: A Contributor is added to a Node
+        * `contributor_removed`: A Contributor is removed from a Node
+        * `contributors_reordered`: A Contributor's position in a Node's bibliography is changed
+        * `permissions_updated`: A Contributor`s permissions on a Node are changed
+        * `made_contributor_visible`: A Contributor is made bibliographically visible on a Node
+        * `made_contributor_invisible`: A Contributor is made bibliographically invisible on a Node
+        ---
+        * `wiki_updated`: A Node's wiki is updated
+        * `wiki_deleted`: A Node's wiki is deleted
+        * `wiki_renamed`: A Node's wiki is renamed
+        * `made_wiki_public`: A Node's wiki is made public
+        * `made_wiki_private`: A Node's wiki is made private
+        ---
+        * `addon_added`: An add-on is linked to a Node
+        * `addon_removed`: An add-on is unlinked from a Node
+        * `addon_file_moved`: A File in a Node's linked add-on is moved
+        * `addon_file_copied`: A File in a Node's linked add-on is copied
+        * `addon_file_renamed`: A File in a Node's linked add-on is renamed
+        * `node_authorized`: An addon is authorized for a project
+        * `node_deauthorized`: An addon is deauthorized for a project
+        * `folder_created`: A Folder is created in a Node's linked add-on
+        * `file_added`: A File is added to a Node's linked add-on
+        * `file_updated`: A File is updated on a Node's linked add-on
+        * `file_removed`: A File is removed from a Node's linked add-on
+        * `file_restored`: A File is restored in a Node's linked add-on
+        ---
+        * `comment_added`: A Comment is added to some item
+        * `comment_removed`: A Comment is removed from some item
+        * `comment_updated`: A Comment is updated on some item
+        ---
+        * `embargo_initiated`: An embargoed Registration is proposed on a Node
+        * `embargo_approved`: A proposed Embargo of a Node is approved
+        * `embargo_cancelled`: A proposed Embargo of a Node is cancelled
+        * `embargo_completed`: A proposed Embargo of a Node is completed
+        * `retraction_initiated`: A Withdrawal of a Registration is proposed
+        * `retraction_approved`: A Withdrawal of a Registration is approved
+        * `retraction_cancelled`: A Withdrawal of a Registration is cancelled
+        * `registration_initiated`: A Registration of a Node is proposed
+        * `registration_approved`: A proposed Registration is approved
+        * `registration_cancelled`: A proposed Registration is cancelled
+      operationId: logs_actions
+      x-api-path-slug: actions-get
+      responses:
+        200:
+          description: OK
+      tags:
+      - Actions
 x-streamrank:
   polling_total_time_average: 0
   polling_size_download_average: 0

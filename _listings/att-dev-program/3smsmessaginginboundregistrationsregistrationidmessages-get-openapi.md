@@ -33,6 +33,23 @@ paths:
       - Registrations
       - RegistrationId
       - Messages
+  /sms/v3/messaging/inbox/{RegistrationID}:
+    get:
+      summary: Get SMS Messaging Inbox Registration
+      description: /sms/v3/messaging/inbox/{RegistrationID}
+      operationId: smsv3messaginginboxregistrationid
+      x-api-path-slug: smsv3messaginginboxregistrationid-get
+      parameters:
+      - in: path
+        name: RegistrationID
+      responses:
+        200:
+          description: OK
+      tags:
+      - Sms
+      - VMessaging
+      - Inbox
+      - RegistrationID
 x-streamrank:
   polling_total_time_average: 0
   polling_size_download_average: 0

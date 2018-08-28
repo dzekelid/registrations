@@ -8,13 +8,13 @@ image: http://kinlane-productions.s3.amazonaws.com/screen-capture-api/1013-getty
 x-kinRank: "8"
 x-alexaRank: "1939"
 tags: Registrations
-created: "2018-06-25"
-modified: "2018-06-25"
+created: "2018-08-28"
+modified: "2018-08-28"
 url: https://raw.githubusercontent.com/streamdata-gallery-topics/registrations/master/_listings/getty-images/apis.md
 specificationVersion: "0.14"
 apis:
-- name: Getty Images Register Assets
-  x-api-slug: getty-images
+- name: Getty Images - Register Assets
+  x-api-slug: v3assetregistrations-post
   description: "# Register Assets\r\n\r\nRegisters a list of assets that a customer
     has stored in their system.\r\n\r\n##  Quickstart\r\n\r\nYou'll need an API key
     and a [Resource Owner Grant](http://developers.gettyimages.com/en/authorization-faq.html)
@@ -24,24 +24,18 @@ apis:
     response body."
   image: http://kinlane-productions.s3.amazonaws.com/screen-capture-api/1013-getty-images.jpg
   humanURL: http://www.gettyimages.com/
-  baseURL: https://api.gettyimages.com////v3/asset-registrations
-  tags: Images,Registrations
+  baseURL: https://api.gettyimages.com//
+  tags: Images, Stack Network, Videos, Photos, Getting Started Example, Media, internet,
+    Technology, Marketplace, API Provider, Stocks, Photos, Photos, Photos, Profiles,
+    Publish, General Data, Relative Data, Service API
   properties:
   - type: x-openapi-spec
     url: https://raw.githubusercontent.com/streamdata-gallery-topics/registrations/master/_listings/getty-images/v3assetregistrations-post-openapi.md
-- name: Getty Images
-  x-api-slug: getty-images
-  description: Find high resolution royalty-free images, editorial stock photos, vector
-    art, video footage clips and stock music licensing at the richest image search
-    photo library online.
-  image: http://kinlane-productions.s3.amazonaws.com/screen-capture-api/1013-getty-images.jpg
-  humanURL: http://www.gettyimages.com/
-  baseURL: https://api.gettyimages.com//
-  tags: Registrations
-  properties:
-  - type: x-openapi-spec
-    url: https://raw.githubusercontent.com/streamdata-gallery-topics/registrations/master/_listings/getty-images/openapi.md
 x-common:
+- type: x-api-gallery
+  url: http://getstream.io.api.gallery.streamdata.io
+- type: x-api-stack
+  url: http://getty.images.stack.network
 - type: x-authentication
   url: https://github.com/gettyimages/connect#authentication
 - type: x-base

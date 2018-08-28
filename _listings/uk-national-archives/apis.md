@@ -12,37 +12,28 @@ image: http://kinlane-productions.s3.amazonaws.com/api-evangelist-site/company/l
 x-kinRank: "7"
 x-alexaRank: "0"
 tags: Registrations
-created: "2018-06-25"
-modified: "2018-06-25"
+created: "2018-08-28"
+modified: "2018-08-28"
 url: https://raw.githubusercontent.com/streamdata-gallery-topics/registrations/master/_listings/uk-national-archives/apis.md
 specificationVersion: "0.14"
 apis:
-- name: Getty Images Search API Post Asset Registrations
-  x-api-slug: getty-images-search-api
+- name: Getty Images - Post Asset Registrations
+  x-api-slug: v3assetregistrations-post
   description: Register a list of customer assets..
   image: http://kinlane-productions.s3.amazonaws.com/api-evangelist-site/company/logos/uk-national-archives.jpeg
   humanURL: http://discovery.nationalarchives.gov.uk/SearchUI/api.htm
-  baseURL: https://api.gettyimages.com////v3/asset-registrations
-  tags: Asset,Registrations
+  baseURL: https://api.gettyimages.com//
+  tags: Archives, Catalog, Government, History, General Data, Historical Data API
   properties:
   - type: x-openapi-spec
     url: https://raw.githubusercontent.com/streamdata-gallery-topics/registrations/master/_listings/uk-national-archives/v3assetregistrations-post-openapi.md
-- name: Getty Images Search API
-  x-api-slug: getty-images-search-api
-  description: Our set of APIs enable seamless integration of Getty Images expansive
-    content, powerful search and rich metadata directly into your internal workflows,
-    products and services. With Connects API solutions, you can fully control, customize
-    and scale as you grow.
-  image: http://kinlane-productions.s3.amazonaws.com/api-evangelist-site/company/logos/uk-national-archives.jpeg
-  humanURL: http://discovery.nationalarchives.gov.uk/SearchUI/api.htm
-  baseURL: https://api.gettyimages.com//
-  tags: Registrations
-  properties:
-  - type: x-openapi-spec
-    url: https://raw.githubusercontent.com/streamdata-gallery-topics/registrations/master/_listings/uk-national-archives/openapi.md
 x-common:
 - type: x-website
   url: http://discovery.nationalarchives.gov.uk/SearchUI/api.htm
+- type: x-api-gallery
+  url: http://uebermaps.api.gallery.streamdata.io
+- type: x-api-stack
+  url: http://uk.national.archives.stack.network
 - type: x-website
   url: http:///Search
 include: []

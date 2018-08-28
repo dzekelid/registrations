@@ -3,7 +3,7 @@ swagger: "2.0"
 x-collection-name: Reverb
 x-complete: 0
 info:
-  title: reverb Post Webhooks Registrations
+  title: Reverb Post Webhooks Registrations
   description: Post webhooks registrations.
   termsOfService: https://reverb.com/page/terms
   contact:

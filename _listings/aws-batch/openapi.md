@@ -1,0 +1,43 @@
+swagger: "2.0"
+x-collection-name: AWS Batch
+x-complete: 1
+info:
+  title: AWS Batch API
+  version: 1.0.0
+schemes:
+- http
+produces:
+- application/json
+consumes:
+- application/json
+paths:
+  /?Action=RegisterJobDefinition:
+    get:
+      summary: Register Job Definition
+      description: Registers an AWS Batch job definition.
+      operationId: registerJobDefinition
+      x-api-path-slug: actionregisterjobdefinition-get
+      parameters:
+      - in: query
+        name: containerProperties
+        description: An object with various properties specific for container-based
+          jobs
+        type: string
+      - in: query
+        name: jobDefinitionName
+        description: The name of the job definition to register
+        type: string
+      - in: query
+        name: parameters
+        description: Default parameter substitution placeholders to set in the job
+          definition
+        type: string
+      - in: query
+        name: type
+        description: The type of job definition
+        type: string
+      responses:
+        200:
+          description: OK
+      tags:
+      - Job Definitions
